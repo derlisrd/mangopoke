@@ -7,14 +7,16 @@ import { API } from "../../services/api";
 import { NewsArticle } from "../../services/dto/news-response";
 import ToolBarTitle from "../../components/toolbar-title";
 import { useState } from "react";
-import { categories } from "../../config/constants";
-import ChipPressable from "../../components/chip-pressable";
 import NoImage from "../../components/no-image";
+import { useAppDispatch } from "../../store/hooks";
+import { setSelectNoticia } from "../../store/noticia-slice";
+import ChipPressable from "../../components/chip-pressable";
 
 
 export default function HomeScreen() {
 
     const nav = useNav()
+    const dispatch = useAppDispatch()
     const [category, setCategory] = useState<string>('')
     const [buscar, setBuscar] = useState<string>('')
     const { isLoading, data: noticias, refetch, isFetching } = useQuery({
@@ -26,10 +28,19 @@ export default function HomeScreen() {
         }
     })
 
+    const buscarNoticias = () => {
+        setCategory(buscar)
+    }
+
+    const seleccionarNoticia = (noticia: NewsArticle) => {
+        dispatch(setSelectNoticia(noticia))
+        nav.navigate('Noticia')
+    }
+
     const renderItem = ({ item }: { item: NewsArticle }) => {
         return <TouchableOpacity
             style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee', marginHorizontal: 16 }}
-            onPress={() => nav.navigate('Noticia')}
+            onPress={() => seleccionarNoticia(item)}
         >
             <View style={{ flexDirection: 'row', gap: 12 }}>
                 {
@@ -57,13 +68,31 @@ export default function HomeScreen() {
 
             <ToolBarTitle title="CNN" />
 
-            <View>
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginHorizontal: 16,
+                marginTop: 8,
+                gap: 8
+            }}>
                 <TextInput
-                    style={{ borderRadius: 8, borderWidth: 1, borderColor: '#ddd', padding: 12, margin: 16, fontSize: getFontScale(16) }}
+                    style={{
+                        flex: 1,
+                        borderRadius: 8,
+                        borderWidth: 1,
+                        borderColor: '#ddd',
+                        padding: 12,
+                        fontSize: getFontScale(16),
+                        backgroundColor: '#fff'
+                    }}
                     placeholder="Buscar noticias..."
                     value={buscar}
                     onChangeText={setBuscar}
                 />
+
+                <ChipPressable onPress={buscarNoticias}>
+                    Buscar
+                </ChipPressable>
             </View>
             {isLoading ? (
                 <View style={styles.centerContainer}>

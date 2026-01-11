@@ -1,8 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import noticiaReducer from './noticias-slice';
+import noticiaSelectReducer from './noticia-slice';
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
-    noticia: noticiaReducer
+    noticiaSelect: noticiaSelectReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+    //serializableCheck: {
+      // ignoredActions: ['noticiaSelect/setSelectNoticia'],
+     // }
+  }),
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
