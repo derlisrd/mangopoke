@@ -34,19 +34,19 @@ export default function NoticiaScreen() {
             {noticia.urlToImage ? (
                 <Image
                     source={{ uri: noticia.urlToImage }}
-                    style={styles.headerImage}
+                    style={styles.imagenCabezera}
                     resizeMode="cover"
                 />
             ) : (
-                <View style={styles.placeholderImage}>
-                    <Text style={styles.placeholderText}>Sin imagen</Text>
+                <View style={styles.containerSinImagen}>
+                    <Text style={styles.sinImagenText}>Sin imagen</Text>
                 </View>
             )}
 
-            <View style={styles.content}>
-                <View style={styles.sourceContainer}>
-                    <Text style={styles.sourceName}>{noticia.sourceName}</Text>
-                    <Text style={styles.date}>
+            <View style={{ padding: 20 }}>
+                <View style={styles.datosContainer}>
+                    <Text style={styles.autor}>{noticia.sourceName}</Text>
+                    <Text style={styles.fechaText}>
                         {new Date(noticia.publishedAt).toLocaleDateString('es-ES', {
                             day: 'numeric',
                             month: 'long',
@@ -60,14 +60,14 @@ export default function NoticiaScreen() {
                 <Text style={styles.title}>{noticia.title}</Text>
 
                 {noticia.descripcion && (
-                    <Text style={styles.description}>{noticia.descripcion}</Text>
+                    <Text style={styles.descripcion}>{noticia.descripcion}</Text>
                 )}
 
                 <TouchableOpacity
                     style={styles.leerMasBoton}
                     onPress={abrirTodo}
                 >
-                    <Text style={styles.readMoreText}>Leer artículo completo</Text>
+                    <Text style={styles.leerMasText}>Leer artículo completo</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
@@ -79,37 +79,34 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    headerImage: {
+    imagenCabezera: {
         width: '100%',
         height: 300,
         backgroundColor: '#e0e0e0',
     },
-    placeholderImage: {
+    containerSinImagen: {
         width: '100%',
         height: 300,
         backgroundColor: '#e0e0e0',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    placeholderText: {
+    sinImagenText: {
         color: '#999',
         fontSize: getFontScale(16),
     },
-    content: {
-        padding: 20,
-    },
-    sourceContainer: {
+    datosContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 16,
     },
-    sourceName: {
+    autor: {
         fontSize: getFontScale(14),
         color: '#007AFF',
         fontWeight: '600',
     },
-    date: {
+    fechaText: {
         fontSize: getFontScale(12),
         color: '#999',
     },
@@ -120,7 +117,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         lineHeight: 32,
     },
-    description: {
+    descripcion: {
         fontSize: getFontScale(16),
         color: '#666',
         lineHeight: 24,
@@ -133,7 +130,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
     },
-    readMoreText: {
+    leerMasText: {
         color: '#fff',
         fontSize: getFontScale(16),
         fontWeight: '600',
